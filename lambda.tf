@@ -11,6 +11,8 @@ resource "aws_lambda_function" "cftest" {
   role = aws_iam_role.lambda.arn
   filename = data.archive_file.cftest.output_path
   source_code_hash = data.archive_file.cftest.output_base64sha256
+  timeout = 60
+  memory_size = 128
 
   environment {
     variables = {

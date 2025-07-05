@@ -12,7 +12,12 @@
   </div>
   <script>
     async function callApi() {
-      const response = await fetch("https://ikvtugaeve.execute-api.us-east-1.amazonaws.com/kirsche/hello");
+      const response = await fetch(window.image_endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
       const data = await response.json();
       if (response.ok) {
         const files = data["files"];
@@ -29,12 +34,17 @@
     }
 
     async function getImage() {
-      if (window.counter >= 100) {
-        console.log("Counter reached 100, stopping API calls.");
+      if (window.counter >= 100 || window.files.length === 0) {
+        console.log("Counter reached 100 or no files available, stopping API calls.");
         window.files = await callApi();
         window.counter = 0; // Reset counter after updating files
       }
 
+      if (window.files.length === 0) {
+        console.log("No files available to display.");
+        return;
+      }
+      
       const randomIndex = Math.floor(Math.random() * window.files.length);
       document.getElementById("kirscheImage").src = window.files[randomIndex];
       console.log("Random file:", window.files[randomIndex]);
@@ -43,6 +53,7 @@
     }
 
     // callApi();
+    window.image_endpoint = "https://ikvtugaeve.execute-api.us-east-1.amazonaws.com/kirsche/hello";
     window.counter = 999;
     window.files = [];
     setInterval(getImage, 30000); // Call the API every 30 seconds
