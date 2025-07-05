@@ -13,10 +13,7 @@
   <script>
     async function callApi() {
       const response = await fetch(window.image_endpoint, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
+        method: "GET"
       });
       const data = await response.json();
       if (response.ok) {
@@ -44,7 +41,7 @@
         console.log("No files available to display.");
         return;
       }
-      
+
       const randomIndex = Math.floor(Math.random() * window.files.length);
       document.getElementById("kirscheImage").src = window.files[randomIndex];
       console.log("Random file:", window.files[randomIndex]);
