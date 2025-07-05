@@ -26,6 +26,7 @@ resource "aws_api_gateway_deployment" "deployment" {
   stage_name = "kirsche"
 }
 
+##### GET Image List #####
 resource "aws_api_gateway_method" "proxy" {
   rest_api_id = aws_api_gateway_rest_api.cftest.id
   resource_id = aws_api_gateway_resource.root.id
@@ -65,7 +66,7 @@ resource "aws_api_gateway_integration_response" "proxy" {
 
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" =  "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET'",
     "method.response.header.Access-Control-Allow-Origin" = "'*'"
   }
 

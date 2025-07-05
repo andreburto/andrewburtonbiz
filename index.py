@@ -4,7 +4,7 @@ import os
 import sys
 
 # Configure logger
-logger = logging.getLogger()
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
@@ -19,7 +19,6 @@ def list_s3_files(bucket_name, prefix):
 
 
 def lambda_handler(event, context):
-
     bucket_name = os.getenv("BUCKET_NAME")
     prefix = os.getenv("PREFIX")
     image_paths = list_s3_files(bucket_name, f"{prefix}/")
