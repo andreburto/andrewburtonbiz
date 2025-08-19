@@ -10,7 +10,7 @@ terraform {
     encrypt = true
     bucket = "mothersect-tf-state"
     dynamodb_table = "mothersect-tf-state-lock"
-    key    = "cftest"
+    key    = "andrewburtonbiz"
     region = "us-east-1"
   }
 }
@@ -27,12 +27,12 @@ locals {
   cf_logs_bucket = join("-", [replace(var.domain_url, ".", "-"), "logs"])
 }
 
-resource "aws_s3_bucket" "cftest" {
+resource "aws_s3_bucket" "website" {
   bucket = var.domain_url
 }
 
-resource "aws_s3_bucket_public_access_block" "cftest" {
-  bucket = aws_s3_bucket.cftest_logs.id
+resource "aws_s3_bucket_public_access_block" "website" {
+  bucket = aws_s3_bucket.website.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -40,12 +40,12 @@ resource "aws_s3_bucket_public_access_block" "cftest" {
   restrict_public_buckets = false
 }
 
-resource "aws_s3_bucket_policy" "cftest_public_read" {
-  bucket = aws_s3_bucket.cftest.id
-  policy = data.aws_iam_policy_document.cftest_public_read.json
+resource "aws_s3_bucket_policy" "website_public_read" {
+  bucket = aws_s3_bucket.website.id
+  policy = data.aws_iam_policy_document.website_public_read.json
 }
 
-data "aws_iam_policy_document" "cftest_public_read" {
+data "aws_iam_policy_document" "website_public_read" {
   statement {
     principals {
       type        = "AWS"
@@ -57,21 +57,21 @@ data "aws_iam_policy_document" "cftest_public_read" {
     ]
 
     resources = [
-      "${aws_s3_bucket.cftest.arn}/*",
+      "${aws_s3_bucket.website.arn}/*",
     ]
   }
 }
 
-resource "aws_s3_bucket_ownership_controls" "cftest" {
-  bucket = aws_s3_bucket.cftest.id
+resource "aws_s3_bucket_ownership_controls" "website" {
+  bucket = aws_s3_bucket.website.id
 
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
 }
 
-resource "aws_s3_bucket_website_configuration" "cftest" {
-  bucket = aws_s3_bucket.cftest.id
+resource "aws_s3_bucket_website_configuration" "website" {
+  bucket = aws_s3_bucket.website.id
 
   index_document {
     suffix = "index.html"
@@ -82,7 +82,7 @@ resource "aws_s3_bucket_website_configuration" "cftest" {
   }
 }
 
-resource "aws_route53_record" "cftest" {
+resource "aws_route53_record" "website" {
   zone_id = var.zone_id
   name    = "${var.domain_url}."
   type    = "A"
@@ -93,21 +93,3 @@ resource "aws_route53_record" "cftest" {
     evaluate_target_health = false
   }
 }
-
-# Load the source files.
-resource "aws_s3_object" "index" {
-  content_type = "text/html"
-  bucket       = aws_s3_bucket.cftest.id
-  key          = "index.html"
-  source       = "index.html"
-  etag        = filemd5("index.html")
-}
-
-resource "aws_s3_object" "kirsche" {
-  content_type = "image/png"
-  bucket       = aws_s3_bucket.cftest.id
-  key          = "kirsche.png"
-  source       = "kirsche.png"
-  etag        = filemd5("kirsche.png")
-}
-

@@ -1,4 +1,4 @@
-resource "aws_acm_certificate" "cftest" {
+resource "aws_acm_certificate" "website" {
   domain_name       = var.domain_url
   validation_method = "DNS"
 
@@ -7,9 +7,9 @@ resource "aws_acm_certificate" "cftest" {
   }
 }
 
-resource "aws_route53_record" "cftest_validation" {
+resource "aws_route53_record" "website_validation" {
   for_each = {
-    for dvo in aws_acm_certificate.cftest.domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.website.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
