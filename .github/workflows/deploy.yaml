@@ -1,4 +1,4 @@
-name: GHA Test
+name: GHA - Deploy to S3
 
 on:
   push:
