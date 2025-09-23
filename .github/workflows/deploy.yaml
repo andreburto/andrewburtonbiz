@@ -34,8 +34,9 @@ jobs:
         run: |
           aws s3 cp ${{ github.workspace }}/static/ s3://andrewburton.biz/ --recursive
 
-      - name: Invalidate CloudFront Cache
-        run: |
-          aws cloudfront create-invalidation \
-          --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-          --paths "/*"
+      # # UNCOMMENT THE FOLLOWING TO ENABLE CLOUDFRONT CACHE INVALIDATION
+      # - name: Invalidate CloudFront Cache
+      #   run: |
+      #     aws cloudfront create-invalidation \
+      #     --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+      #     --paths "/*"
