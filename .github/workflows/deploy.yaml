@@ -2,10 +2,10 @@ name: GHA - Deploy to S3
 
 on:
   push:
+    branches:
+      - master
     paths:
       - 'static/**'
-#    branches:
-#      - master
 
 jobs:
   deploy:

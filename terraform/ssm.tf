@@ -17,7 +17,7 @@
 # resource "aws_ssm_parameter" "apigw_arn" {
 #   name        = "/cftest/apigw_arn"
 #   type        = "String"
-#   value       = aws_api_gateway_rest_api.cftest.id
+#   value       = aws_api_gateway_rest_api.website.id
 #   overwrite   = true
 #   description = "API Gateway ARN for the cftest application"
 # }

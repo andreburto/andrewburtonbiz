@@ -48,17 +48,17 @@
 # resource "aws_lambda_permission" "apigw_lambda" {
 #   statement_id = "AllowExecutionFromAPIGateway"
 #   action = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.cftest.function_name
+#   function_name = aws_lambda_function.website.function_name
 #   principal = "apigateway.amazonaws.com"
 
-#   source_arn = "${aws_api_gateway_rest_api.cftest.execution_arn}/*"
+#   source_arn = "${aws_api_gateway_rest_api.website.execution_arn}/*"
 # }
 
 # resource "aws_lambda_permission" "apigw_lambda_post" {
 #   statement_id = "AllowExecutionFromAPIGateway"
 #   action = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.cftest_post.function_name
+#   function_name = aws_lambda_function.website_post.function_name
 #   principal = "apigateway.amazonaws.com"
 
-#   source_arn = "${aws_api_gateway_rest_api.cftest.execution_arn}/*"
+#   source_arn = "${aws_api_gateway_rest_api.website.execution_arn}/*"
 # }

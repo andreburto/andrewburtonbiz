@@ -1,7 +1,7 @@
-resource "aws_cloudfront_distribution" "cftest" {
+resource "aws_cloudfront_distribution" "website" {
   origin {
-    domain_name              = aws_s3_bucket.cftest.bucket_domain_name
-    origin_id                = aws_s3_bucket.cftest.id
+    domain_name              = aws_s3_bucket.website.bucket_domain_name
+    origin_id                = aws_s3_bucket.website.id
   }
 
   enabled             = true
@@ -13,13 +13,13 @@ resource "aws_cloudfront_distribution" "cftest" {
 
   logging_config {
     include_cookies = false
-    bucket          = aws_s3_bucket.cftest_logs.bucket_regional_domain_name
+    bucket          = aws_s3_bucket.website_logs.bucket_regional_domain_name
   }
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = aws_s3_bucket.cftest.id
+    target_origin_id = aws_s3_bucket.website.id
     viewer_protocol_policy = "redirect-to-https"
 
     forwarded_values {
@@ -41,7 +41,7 @@ resource "aws_cloudfront_distribution" "cftest" {
 
   viewer_certificate {
     cloudfront_default_certificate = false
-    acm_certificate_arn            = aws_acm_certificate.cftest.arn
+    acm_certificate_arn            = aws_acm_certificate.website.arn
     ssl_support_method             = "sni-only"
     minimum_protocol_version       = "TLSv1.2_2021"
   }
